@@ -1,7 +1,8 @@
 package main;
 
 import java.util.Scanner;
-
+//AVISO PARA OS DESENVOLVEDORES
+//VC É LINDO
 public class index {
 
 	public static void main(String[] args) {
