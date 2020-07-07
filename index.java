@@ -9,18 +9,29 @@ public class index {
 		Scanner s = new Scanner(System.in);
 		String estado = "aguardo";
 		
+		String parametro1 = "";
+		String parametro2 = "";
+		
 		while (!estado.contentEquals("finalizar")){
 			if (!estado.contentEquals("iniciar")){
 				System.out.println("Favor digite 'iniciar' para começar");
 			}
-			String comando = s.nextLine();
-			estado = Comandos(comando, estado);
+			String input = s.nextLine();
+			
+			String[] inputVetor = input.split(" ");
+			
+			String comando = inputVetor[0]; 
+			
+			if(inputVetor.length > 1)
+				parametro1 = inputVetor[1]; 
+			if(inputVetor.length == 3)
+				parametro2 = inputVetor[2]; 
+			
+			estado = Comandos(comando, parametro1, parametro2, estado);
 		}
 	}
 	
-	public static String Comandos(String comando, String estado) {
-		
-		memoriaVirtual memoriaVirtual = new memoriaVirtual();
+	public static String Comandos(String comando, String parametro1, String parametro2, String estado) {
 		
 		switch (comando){
 			case "iniciar":
@@ -49,7 +60,7 @@ public class index {
 			case "ler_b":
 				if (ProgramaIniciado(estado))
 				{
-					memoriaVirtual.LerB();
+					controlador.LerB(parametro1);
 				}
 				break;
 				
@@ -75,7 +86,7 @@ public class index {
 			case "escrever_b":
 				if (ProgramaIniciado(estado))
 				{	
-					memoriaVirtual.EscreverB();
+					controlador.EscreverB(parametro1, parametro2);
 				}				
 				break;
 				
