@@ -23,14 +23,17 @@ public class memoriaVirtual {
 	
 	public void EscreverB() {  //ESCREVE 1 BYTE NA POSIÇÃO ESPECIFICADA
 		System.out.print("//-: ");
-		dados = s.nextLine();
+		dados = s.nextLine();		
+		 
+		//FUNÇÃO PARA DESCOBRIR ENDEREÇAMENTO. int numero = Integer.parseInt(bin, 2);
+		pos = Integer.toString(Integer.parseInt("ff", 16), 2);
+		pos = pos.substring(0, 2);		
+		pos = Integer.toString(Integer.parseInt(pos, 2));
+		System.out.println(pos);
 		
-		pos = dados.substring(0, 2); 
-		
-		//FUNÇÃO PARA DESCOBRIR ENDEREÇAMENTO.		
 		
 		try {			
-			memoriaVirtual.seek(pos.length()); //POSIÇÃO			
+			memoriaVirtual.seek(Integer.parseInt(pos)); //POSIÇÃO			
 			memoriaVirtual.writeBytes(dados);  //ESCREVE NO ARQUIVO
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -42,7 +45,10 @@ public class memoriaVirtual {
 			System.out.print("//-: ");
 			pos = s.nextLine();
 			
-			//FUNÇÃO PARA DESCOBRIR ENDEREÇAMENTO.
+			
+			//FUNÇÃO PARA DESCOBRIR ENDEREÇAMENTO. 
+			//binário para hexa: String hexa = Integer.toString(Integer.parseInt("1111", 2), 16);
+			//hexadecimal para binário: String bin = Integer.toString(Integer.parseInt("ff", 16), 2);
 			
 			memoriaVirtual.seek(pos.length()); 		   //POSICÃO
 			System.out.println(memoriaVirtual.read()); //LER O ARQUIVO

@@ -3,16 +3,6 @@ package main;
 import java.util.Scanner;
 
 public class index {
-<<<<<<< HEAD
-
-	public static void main(String[] args) {
-		Scanner s = new Scanner(System.in);
-		String estado = "aguardo";
-		while (!estado.contentEquals("finalizar"))
-		{
-			if (!estado.contentEquals("iniciar"))
-			{
-=======
 	
 	public static void main(String[] args) {
 		
@@ -21,7 +11,6 @@ public class index {
 		
 		while (!estado.contentEquals("finalizar")){
 			if (!estado.contentEquals("iniciar")){
->>>>>>> Classes 29/06
 				System.out.println("Favor digite 'iniciar' para começar");
 			}
 			String comando = s.nextLine();
@@ -30,15 +19,10 @@ public class index {
 	}
 	
 	public static String Comandos(String comando, String estado) {
-<<<<<<< HEAD
-		switch (comando)
-		{
-=======
 		
 		memoriaVirtual memoriaVirtual = new memoriaVirtual();
 		
 		switch (comando){
->>>>>>> Classes 29/06
 			case "iniciar":
 				estado = comando;
 				System.out.println("O sistema foi inicializado");
@@ -57,33 +41,21 @@ public class index {
 				
 			case "vir":
 				if (ProgramaIniciado(estado))
-<<<<<<< HEAD
-				{
-					System.out.println("teste");
-=======
 				{					
 					memoriaVirtual.CriaArquivo();
->>>>>>> Classes 29/06
 				}
 				break;
 							
 			case "ler_b":
 				if (ProgramaIniciado(estado))
 				{
-<<<<<<< HEAD
-=======
 					memoriaVirtual.LerB();
->>>>>>> Classes 29/06
 				}
 				break;
 				
 			case "ler_w":
 				if (ProgramaIniciado(estado))
-<<<<<<< HEAD
-				{
-=======
 				{					
->>>>>>> Classes 29/06
 				}
 				break;
 				
@@ -102,14 +74,9 @@ public class index {
 				
 			case "escrever_b":
 				if (ProgramaIniciado(estado))
-<<<<<<< HEAD
-				{
-				}
-=======
 				{	
 					memoriaVirtual.EscreverB();
 				}				
->>>>>>> Classes 29/06
 				break;
 				
 			case "escrever_w":
@@ -163,10 +130,6 @@ public class index {
 		{
 			System.out.println("Comando inválido, favor digite o comando 'iniciar' para começar");
 			return false;			
-<<<<<<< HEAD
-		}
-=======
 		}		
->>>>>>> Classes 29/06
 	}
 }
