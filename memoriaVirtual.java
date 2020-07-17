@@ -12,55 +12,77 @@ public class memoriaVirtual {
 	String dados;
 	String pos;
 
-	public static void CriaArquivo() { //CRIA ARQUIVO COM TAMANHO NECESSARIO										
-		try {				    	   //PARA ARMAZENAR NA MEMORIA
-			memoriaVirtual = new RandomAccessFile("memoriaVirtual.txt", "rw");
+	public static void CriaArquivo(String tam, String nomeArquivo) {		//CRIA ARQUIVO DE ACORDO COM NOME INSERIDO E		
+		try {																//E IMPLEMENTADO FOR PARA PREENCHER COM 0's DE	    	   
+			memoriaVirtual = new RandomAccessFile(nomeArquivo+".txt", "rw");//ACORDO COM TAMANHO INSERIDO			
+			for(int i = 0; i < Integer.parseInt(tam); i++) {
+				memoriaVirtual.writeByte(48); 
+			}			
 			System.out.println("... Arquivo Criado com Sucesso ! ...");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void EscreverB(long bin, String valor) {  //ESCREVE 1 BYTE NA POSIÇÃO ESPECIFICADA	
-		long pos = 0;
-		long pagina = controlador.somentePagina(bin);
-		//FUNÇÃO PARA DESCOBRIR ENDEREÇAMENTO. int numero = Integer.parseInt(bin, 2);
-		/*pos = Integer.toString(Integer.parseInt("ff", 16), 2);
-		pos = pos.substring(0, 2);		
-		pos = Integer.toString(Integer.parseInt(pos, 2));
-		System.out.println(pos);
+	public void EscreverB(long bin, String valor) {     //PASSANDO DADO PARA UM VETOR DE CHAR DEPOIS IMPLEMENTADO FOR PARA
+		//long pagina = controlador.somentePagina(bin); //PREENCHER DADO DE ACORDO COM A POSIÇÃO INSERIDA	
+		char[] dado = Long.toString(bin).toCharArray();	
+		int pos = Integer.parseInt(valor);
 		
-		
-		try {			
-			memoriaVirtual.seek(Integer.parseInt(pos)); //POSIÇÃO			
-			memoriaVirtual.writeBytes(dados);  //ESCREVE NO ARQUIVO
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		*/
-	}
-	
-	public void LerB(long bin) { //LE 1 BITE NA POSIÇÃO ESPECIFICADA
-		try {			
-			long pos = 0;
-			long pagina = controlador.somentePagina(bin);
-			//FUNÇÃO PARA DESCOBRIR ENDEREÇAMENTO. 
-			//binário para hexa: String hexa = Integer.toString(Integer.parseInt("1111", 2), 16);
-			//hexadecimal para binário: String bin = Integer.toString(Integer.parseInt("ff", 16), 2);
-			int tamanhodapagina = 100;
-			int local = encontrarpagina(pagina);
-			long endereco = local+pos; //pos tera de ser convertido ainda
-			
-			memoriaVirtual.seek(endereco); 		   //POSICÃO
-			System.out.println(memoriaVirtual.read()); //LER 8 bits dO ARQUIVO
+		try {
+			memoriaVirtual.seek(pos);			
+			for(int i = 0; i < Long.toString(bin).length(); i++) {				
+				memoriaVirtual.writeByte(dado[i]);
+			}						
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private int encontrarpagina(long pagina) {
-		//encontrar aonde está a pagina em bin
-		return 0;
+	public void LerB(long bin) { //CONTROLADOR BUSCA PAGINA INSERIDA
+		try {					 //CRIADO METODO PARA ENCONTRAR A PAGINA
+			//long pos = 0;		 //E EM SEGUIDA ARQUIVO É LIDO DE ACORDO COM A POSIÇÃO ENCONTRADA + TAMANHO DA PAGINA
+			//int tamanhodapagina = 5;
+			long pagina = controlador.somentePagina(bin);			
+			int local = encontrarpagina(pagina);
+		
+			
+			if(local != 20) { // TAMANHO DIFERENTE DO TAMANHO TOTAL (CASO NÃO ACHAR)
+				memoriaVirtual.seek(local);
+				System.out.println(memoriaVirtual.readLine().substring(local, 1024));
+			} else {
+				System.out.println("... Posição não Encontrada ! ...");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
+	
+	private int encontrarpagina(long pagina) throws IOException {	//APONTANDO PAGINAS A CADA PULOS DO 'J' (VARIA DE ACORDO COM O TAMANHO)
+		boolean achou = false;										//E LE OS 3 PRIMEIROS CARACTERES E COMPARA COM A PAG INSERIDA
+		int j = 0;
+		byte[] b1 = new byte[3];		
+		
+		do{ 		
+			memoriaVirtual.seek(j);
+			memoriaVirtual.read(b1);			
+			String pag = new String(b1, 0, 3);
+		
+			if(Long.parseLong(pag) == pagina) {
+				//return Integer.parseInt(Long.toString(pagina));
+				achou = true;
+				return j;
+			}else if(j < 20){ //J TEM QUE SER MENOR QUE O TAMANHO DO ARQUIVO PARA NÃO ENTRAR EM LOOP (PROCURAR MELHORIA)
+				j += 10;				
+			}else {
+				return j;
+			}
+			
+		}while (achou != true);
+		
+		return j;
+	}
+	
 
 }
 	
