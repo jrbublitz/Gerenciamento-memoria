@@ -1,7 +1,7 @@
 package main;
 
 public class controlador {
-	
+	/*	
 	private static memoriaVirtual memoriaVirtual = new memoriaVirtual();
 	private static memoriaFisica memoriaFisica = new memoriaFisica();
 
@@ -15,7 +15,8 @@ public class controlador {
 		memoriaVirtual.EscreverB(bin, valor);
 
 	}
-
+	*/
+	/*
 	public static String LerB(String hex) {
 		 long bin = Long.valueOf(HexToBin(hex));//hex para bin
 		//separar 3 primeiros do bin para identificar a pagina
@@ -23,7 +24,7 @@ public class controlador {
 		if(memoriaFisica.existe(pagina));// procurar na fisica, senão procurara na virtual
 		//ler na fisica
 		else
-		/*return*/memoriaVirtual.LerB(bin);
+		memoriaVirtual.LerB(bin);
 		return ""; 		
 	}
 	
@@ -34,4 +35,5 @@ public class controlador {
 	public static long somentePagina(long bin) {
 		return Long.valueOf(String.valueOf(bin).substring(0, 3));
 	}
+	*/
 }

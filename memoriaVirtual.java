@@ -5,17 +5,17 @@ import java.io.RandomAccessFile;
 import java.util.Scanner;
 
 public class memoriaVirtual {
-	
+	/*
 	static RandomAccessFile memoriaVirtual;
 	
 	Scanner s = new Scanner(System.in);	
 	String dados;
 	String pos;
 
-	public static void CriaArquivo(String tam, String nomeArquivo) {		//CRIA ARQUIVO DE ACORDO COM NOME INSERIDO E		
+	public static void CriaArquivo(long tam, String nomeArquivo) {		//CRIA ARQUIVO DE ACORDO COM NOME INSERIDO E		
 		try {																//E IMPLEMENTADO FOR PARA PREENCHER COM 0's DE	    	   
-			memoriaVirtual = new RandomAccessFile(nomeArquivo+".txt", "rw");//ACORDO COM TAMANHO INSERIDO			
-			for(int i = 0; i < Integer.parseInt(tam); i++) {
+			memoriaVirtual = new RandomAccessFile(nomeArquivo+".bin", "rw");//ACORDO COM TAMANHO INSERIDO			
+			for(long i = 0; i < tam; i++) {
 				memoriaVirtual.writeByte(48); 
 			}			
 			System.out.println("... Arquivo Criado com Sucesso ! ...");
@@ -24,19 +24,18 @@ public class memoriaVirtual {
 		}
 	}
 	
-	public void EscreverB(long bin, String valor) {     //PASSANDO DADO PARA UM VETOR DE CHAR DEPOIS IMPLEMENTADO FOR PARA
-		//long pagina = controlador.somentePagina(bin); //PREENCHER DADO DE ACORDO COM A POSIÇÃO INSERIDA	
-		char[] dado = Long.toString(bin).toCharArray();	
-		int pos = Integer.parseInt(valor);
+	public void EscreverB(long pos, byte valor) {     
+		//long pagina = controlador.somentePagina(bin); 	
+		//char[] dado = Long.toString(bin).toCharArray();	
+		//int pos = Integer.parseInt(valor);						
 		
 		try {
-			memoriaVirtual.seek(pos);			
-			for(int i = 0; i < Long.toString(bin).length(); i++) {				
-				memoriaVirtual.writeByte(dado[i]);
-			}						
+			memoriaVirtual.seek(pos);							
+			memoriaVirtual.writeByte(dado[i]);									
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	public void LerB(long bin) { //CONTROLADOR BUSCA PAGINA INSERIDA
@@ -83,6 +82,6 @@ public class memoriaVirtual {
 		return j;
 	}
 	
-
+*/
 }
 	

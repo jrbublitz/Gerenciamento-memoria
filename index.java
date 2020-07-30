@@ -6,6 +6,23 @@ public class index {
 	
 	public static void main(String[] args) {
 		
+		Paginacao p = new Paginacao(1024, 4, 2);
+		//p.testar();
+		p.acessar(0*1024+1);
+		p.testarDisponivel(0*1024+1);
+		p.acessar(1*1024+1);
+		p.testarDisponivel(1*1024+1);
+		p.acessar(2*1024+1);
+		p.testarDisponivel(2*1024+1);
+		p.acessar(3*1024+1);
+		p.testarDisponivel(3*1024+1);
+		
+		p.testarDisponivel(0*1024+1);
+		p.testarDisponivel(1*1024+1);
+		p.testarDisponivel(2*1024+1);
+		p.testarDisponivel(3*1024+1);
+		
+		/*
 		Scanner s = new Scanner(System.in);
 		String estado = "aguardo";
 		
@@ -30,6 +47,7 @@ public class index {
 			
 			estado = Comandos(comando, parametro1, parametro2, estado);
 		}
+		*/
 	}
 	
 	public static String Comandos(String comando, String parametro1, String parametro2, String estado) {	
@@ -54,14 +72,14 @@ public class index {
 			case "vir":
 				if (ProgramaIniciado(estado))
 				{					
-					memoriaVirtual.CriaArquivo(parametro1, parametro2);
+					//memoriaVirtual.CriaArquivo(Long.parseLong(parametro1), parametro2);
 				}
 				break;
 							
 			case "ler_b":
 				if (ProgramaIniciado(estado))
 				{
-					controlador.LerB(parametro1);					
+					//controlador.LerB(parametro1);					
 				}
 				break;
 				
@@ -87,7 +105,7 @@ public class index {
 			case "escrever_b":
 				if (ProgramaIniciado(estado))
 				{	
-					controlador.EscreverB(parametro1, parametro2);					
+					//controlador.EscreverB(parametro1, parametro2);					
 				}				
 				break;
 				
