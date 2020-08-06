@@ -3,9 +3,14 @@ package main;
 import java.util.Scanner;
 
 public class index {
+	static int nPagVirtuais = -1;
+	static String nomeArquivo;
+	static int nPagReais = -1;
+	static int tamPagina = -1;
+	static Paginacao paginacao=null;
 	
-	public static void main(String[] args) {
-		
+	public static void main(String[] args) {		
+		/*
 		Paginacao p = new Paginacao(1024, 4, 2);
 		//p.testar();
 		p.acessar(0*1024+1);
@@ -22,7 +27,7 @@ public class index {
 		p.testarDisponivel(2*1024+1);
 		p.testarDisponivel(3*1024+1);
 		
-		/*
+		*/
 		Scanner s = new Scanner(System.in);
 		String estado = "aguardo";
 		
@@ -47,7 +52,7 @@ public class index {
 			
 			estado = Comandos(comando, parametro1, parametro2, estado);
 		}
-		*/
+		
 	}
 	
 	public static String Comandos(String comando, String parametro1, String parametro2, String estado) {	
@@ -65,14 +70,23 @@ public class index {
 				
 			case "fis":
 				if (ProgramaIniciado(estado))
-				{
+				{					
+					if(nPagVirtuais != -1) {
+						paginacao = new Paginacao(Integer.valueOf(parametro2), nPagVirtuais, Integer.valueOf(parametro1), nomeArquivo);
+					}
+					tamPagina = Integer.valueOf(parametro2);
+					nPagReais = Integer.valueOf(parametro1);
 				}
 				break;
 				
 			case "vir":
 				if (ProgramaIniciado(estado))
 				{					
-					//memoriaVirtual.CriaArquivo(Long.parseLong(parametro1), parametro2);
+					if(nPagReais != -1) {
+						paginacao = new Paginacao(tamPagina, Integer.valueOf(parametro1), nPagReais, parametro2);
+					}
+					nPagVirtuais = Integer.valueOf(parametro1);
+					nomeArquivo = parametro2;
 				}
 				break;
 							
@@ -105,7 +119,7 @@ public class index {
 			case "escrever_b":
 				if (ProgramaIniciado(estado))
 				{	
-					//controlador.EscreverB(parametro1, parametro2);					
+					paginacao.EscreverB(parametro1, parametro2);					
 				}				
 				break;
 				
@@ -130,7 +144,7 @@ public class index {
 			case "help":
 				System.out.println("iniciar - avisar a aplicação que serão enviadas instruções fis, vir e leitura e escrita, serve para configurar a aplicação");
 				System.out.println("finalizar - encerrar a aplicação e remover arquivo criado");
-				System.out.println("fis [bits] - alocar em memória principal a quantidade de espaço especificada pelo número de bits informado");
+				System.out.println("fis [bits] [tamanho das páginas]- alocar em memória principal a quantidade de espaço especificada pelo número de bits informado");
 				System.out.println("vir [bits] [arquivo] - cria o arquivo especificado com o tamanho necessário para armazenar a memória do sistema");
 				System.out.println("ler_b [endereço] - leitura de 1 byte no endereço especificado");
 				System.out.println("ler_w [endereço] - leitura de 2 bytes no endereço especificado");

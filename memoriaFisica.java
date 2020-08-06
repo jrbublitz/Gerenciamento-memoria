@@ -1,5 +1,7 @@
 package main;
 
+import java.io.IOException;
+
 public class memoriaFisica {
 	
 public String memoria[];

@@ -9,20 +9,24 @@ public class Paginacao {
 	int nPagVirtuais = 0;
 	int nPagReais = 0;
 	PaginaVirtual paginasVirtuais [] = null;
-	byte memoriaFisica [] = null;
+	PaginaFisica memoriaFisica [] = null;
 	RandomAccessFile memoriaVirtual = null;
 	
-	public Paginacao(int tamPagina, int nPagVirtuais, int nPagReais) {
+	public Paginacao(int tamPagina, int nPagVirtuais, int nPagReais, String nomeArquivo) {
 		this.tamPagina = tamPagina;
 		this.nPagVirtuais = nPagVirtuais;
 		this.nPagReais = nPagReais;
 		paginasVirtuais = new PaginaVirtual[nPagVirtuais];
-		memoriaFisica = new byte[nPagReais*tamPagina]; 
-				
+		memoriaFisica = new PaginaFisica[nPagReais]; 
+			
+		for(int i = 0; i < nPagReais; i++) {
+			memoriaFisica[i] = new PaginaFisica(tamPagina);
+			memoriaFisica[i].moldura = i;
+		}	
 		for(int i = 0; i < nPagVirtuais; i++) {
 			paginasVirtuais[i] = new PaginaVirtual();
 		}	
-		criaArquivo(tamPagina*nPagVirtuais, "MemoriaVirtual.bin");
+		criaArquivo(tamPagina*nPagVirtuais, nomeArquivo);
 		
 		for(int i = 0; i < nPagReais; i++) {
 			carregarPaginaVirtual(i, i);			
@@ -33,7 +37,7 @@ public class Paginacao {
 		try {																//E IMPLEMENTADO FOR PARA PREENCHER COM 0's DE	    	   
 			memoriaVirtual = new RandomAccessFile(nomeArquivo+".bin", "rw");//ACORDO COM TAMANHO INSERIDO			
 			for(long i = 0; i < tam; i++) {
-				memoriaVirtual.writeByte(48); 
+				memoriaVirtual.writeByte(48);
 			}			
 			System.out.println("... Arquivo Criado com Sucesso ! ...");
 		} catch (IOException e) {
@@ -45,7 +49,7 @@ public class Paginacao {
 	public void carregarPaginaVirtual(int nPagReal, int nPagVirtual) {
 		try {
 			memoriaVirtual.seek(nPagVirtual*tamPagina);
-			memoriaVirtual.read(memoriaFisica, nPagReal*tamPagina, tamPagina);
+			memoriaVirtual.read(memoriaFisica[nPagReal].pagina, 0, tamPagina);
 			paginasVirtuais[nPagVirtual].moldura = nPagReal;
 			paginasVirtuais[nPagVirtual].sujo = false;
 			paginasVirtuais[nPagVirtual].disponivel = true;
@@ -59,7 +63,7 @@ public class Paginacao {
 		if(paginasVirtuais[nPagVirtual].sujo) {
 			try {
 				memoriaVirtual.seek(nPagVirtual*tamPagina);
-				memoriaVirtual.write(memoriaFisica, nPagReal*tamPagina, tamPagina);
+				memoriaVirtual.write(memoriaFisica[nPagReal].pagina, 0, tamPagina);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}	
@@ -69,17 +73,17 @@ public class Paginacao {
 		paginasVirtuais[nPagVirtual].disponivel = false;
 	}
 	
+	/*
 	public void testar() {
 		for(int pos = 0; pos < tamPagina; pos++) {
 			memoriaFisica[pos] = (byte)(pos%127);			
 		}
-		/*
 		 * 0/10, resultado = 0, resto = 0
 		1/10, resultado = 0, resto = 1
 		2/10, resultado = 0, resto = 2
 		9/10, resultado = 0, resto = 9
 		10/10, resultado = 1, resto = 0
-		*/
+		
 		for(int pos = 0; pos < tamPagina; pos++) {	
 			System.out.println("POS: " + pos + ", VALOR: " + (int) memoriaFisica[pos]);
 		}
@@ -95,6 +99,7 @@ public class Paginacao {
 			System.out.println("POS: " + pos + ", VALOR: " + (int) memoriaFisica[pos]);
 		}
 	}
+	
 	
 	public void acessar(int pos) {
 		int nPagVirtual = pos/tamPagina; //POS >> BITS(TAMPAGS)
@@ -121,5 +126,23 @@ public class Paginacao {
 		int nPagVirtual = pos/tamPagina;
 		System.out.println("PAG: "+ nPagVirtual +" - DISPONIVEL: " + paginasVirtuais[nPagVirtual].disponivel);
 		
+	}*/
+
+	public void EscreverB(String dado, String bin) {
+		//String bin = String.valueOf(Long.toString(Long.parseLong(enderecoHex, 16), 2));//hex para bin		
+		
+		int moldura = Integer.valueOf(String.valueOf(bin).substring(0, 3));
+		int endereco = Integer.valueOf(String.valueOf(bin).substring(3, 11));
+						
+		//tenta encontrar na memoria física
+		for(int i = 0; i < nPagReais; i++) {
+			if(memoriaFisica[i].moldura == moldura) {
+					memoriaFisica[i].pagina[endereco] = Byte.valueOf(dado);
+				return;
+			}			
+		}
+		//tenta carregar da virtual para a posicao random da fisica
+		
+		//se nao tiver na virtual criar na posicao random da fisica
 	}
 }
