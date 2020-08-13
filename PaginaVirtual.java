@@ -6,7 +6,7 @@ public class PaginaVirtual {
 	int moldura;
 	
 	public PaginaVirtual() {
-		disponivel = false;
+		disponivel = true;
 		sujo = false;
 		moldura = 0;
 	}
