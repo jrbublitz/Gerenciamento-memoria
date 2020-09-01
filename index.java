@@ -93,7 +93,7 @@ public class index {
 			case "ler_b":
 				if (ProgramaIniciado(estado))
 				{
-					//controlador.LerB(parametro1);					
+					paginacao.LerB(parametro1);					
 				}
 				break;
 				
