@@ -127,6 +127,65 @@ public class Paginacao {
 
 	}
 
+	public void EscreverW(String dado, String bin) {
+		// String bin = String.valueOf(Long.toString(Long.parseLong(enderecoHex, 16),
+				// 2));//hex para bin
+		
+				String dado2 = dado.split("-")[0];
+				dado = dado.split("-")[1];
+				
+				int moldura = Integer.valueOf(String.valueOf(bin).substring(0, 3));
+				String endereco = String.valueOf(bin).substring(3, 12);
+
+				// tenta encontrar na memoria física
+				for (int i = 0; i < nPagReais; i++) {
+					if (memoriaFisica[i].moldura == moldura) {
+						memoriaFisica[i].pagina[Integer.parseInt(endereco, 2)] = Byte.valueOf(dado);
+						memoriaFisica[i].pagina[Integer.parseInt(endereco+1, 2)] = Byte.valueOf(dado2);
+						return;
+					}
+				}
+				// se nao estiver a moldura na fisica, tenta escrever na virtual
+				try {
+					for (int i = 0; i < paginasVirtuais.length; i++) {
+						if (paginasVirtuais[i].moldura == moldura) {
+							memoriaVirtual.seek(i * tamPagina);
+							memoriaVirtual.writeByte(Integer.valueOf(dado));
+							memoriaVirtual.writeByte(Integer.valueOf(dado2));
+						}
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				// se nao tiver na virtual criar na primeira posição disponivel virtual
+				try {
+					for (int i = 0; i < paginasVirtuais.length; i++) {
+						if (paginasVirtuais[i].disponivel) {
+							memoriaVirtual.seek(i * tamPagina + Integer.parseInt(endereco, 2));
+							memoriaVirtual.writeByte(Integer.valueOf(dado));
+							memoriaVirtual.writeByte(Integer.valueOf(dado2));
+							memoriaVirtual.seek(0);					
+
+							paginasVirtuais[i].disponivel = false;
+
+							int emUso = 0;
+							for (int j = 0; j < paginasVirtuais.length; j++) {
+								if (!paginasVirtuais[j].disponivel)
+									emUso++;
+							}
+
+							paginasVirtuais[i].moldura = emUso + nPagReais;
+
+							return;
+						}
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+	}
+	
 	public void LerB(String bin) {
 		// String bin = String.valueOf(Long.toString(Long.parseLong(enderecoHex, 16),
 		// 2));//hex para bin
@@ -146,14 +205,16 @@ public class Paginacao {
 
 		// se nao procurar moldura na virtual
 		for (int i = 0; i < paginasVirtuais.length; i++) {
-			// se achar, botar na fisica(random)
+			// se achar, salvar na fisica(random)
 			if (paginasVirtuais[i].moldura == moldura) {
-				int random = (int) (Math.random() * nPagVirtuais);
-				// salvarPaginaVirtual(random, VirtualDisponivel);
-				paginasVirtuais[i].disponivel = false;
+				// valor random para salvar na fisica
+				int random = (int) (Math.random() * nPagReais);
+				// seta a pagina como disponível
+				paginasVirtuais[i].disponivel = true;
 				int emUso = 0;
+				// achar pagina virtual para salvar o valor da pagina de moldura random
 				for (int j = 0; j < paginasVirtuais.length; j++) {
-					if (!paginasVirtuais[j].disponivel) {
+					if (paginasVirtuais[j].disponivel) {
 						salvarPaginaVirtual(random, j);
 						// carregarPaginaVirtual(i, random)
 						carregarPaginaVirtual(i, random);	
@@ -169,6 +230,54 @@ public class Paginacao {
 
 		// se nao estoura
 		System.out.println("não encontrado!");
+	}
+	
+	public void LerW(String bin) {
+		// String bin = String.valueOf(Long.toString(Long.parseLong(enderecoHex, 16),
+				// 2));//hex para bin
+
+				int moldura = Integer.valueOf(String.valueOf(bin).substring(0, 3));
+				String endereco = String.valueOf(bin).substring(3, 12);
+				
+				//memoriaFisica.procurarMoldura();
+				
+				// procurar moldura na fisica
+				for (int i = 0; i < nPagReais; i++) {
+					if (memoriaFisica[i].moldura == moldura) {
+						System.out.print(memoriaFisica[i].pagina[Integer.parseInt(endereco, 2)]);
+						System.out.println(", " + memoriaFisica[i].pagina[Integer.parseInt(endereco+1, 2)]);
+						return;
+					}
+				}
+
+				// se nao procurar moldura na virtual
+				for (int i = 0; i < paginasVirtuais.length; i++) {
+					// se achar, salvar na fisica(random)
+					if (paginasVirtuais[i].moldura == moldura) {
+						// valor random para salvar na fisica
+						int random = (int) (Math.random() * nPagReais);
+						// seta a pagina como disponível
+						paginasVirtuais[i].disponivel = true;
+						int emUso = 0;
+						// achar pagina virtual para salvar o valor da pagina de moldura random
+						for (int j = 0; j < paginasVirtuais.length; j++) {
+							if (paginasVirtuais[j].disponivel) {
+								salvarPaginaVirtual(random, j);
+								// carregarPaginaVirtual(i, random)
+								carregarPaginaVirtual(i, random);	
+								String binario = Integer.toBinaryString(memoriaFisica[random].pagina[Integer.parseInt(endereco, 2)]);
+								String binario2 = Integer.toBinaryString(memoriaFisica[random].pagina[Integer.parseInt(endereco+1, 2)]);
+								System.out.println(binario+ ", " + binario2);
+								return;						
+							}
+						}
+						System.out.println("Não há disponibilidade...");
+						return;
+					}
+				}
+
+				// se nao estoura
+				System.out.println("não encontrado!");
 	}
 
 	/*

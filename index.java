@@ -93,13 +93,14 @@ public class index {
 			case "ler_b":
 				if (ProgramaIniciado(estado))
 				{
-					paginacao.LerB(parametro1);					
+					paginacao.LerB(parametro1); //paginacao.Ler(parametro1, 1);	// 1 byte					
 				}
 				break;
 				
 			case "ler_w":
 				if (ProgramaIniciado(estado))
-				{					
+				{			
+					paginacao.LerW(parametro1);	 //paginacao.Ler(parametro1, 2);	// 2 bytes
 				}
 				break;
 				
@@ -119,13 +120,14 @@ public class index {
 			case "escrever_b":
 				if (ProgramaIniciado(estado))
 				{	
-					paginacao.EscreverB(parametro1, parametro2);					
+					paginacao.EscreverB(parametro1, parametro2);//paginacao.Escrever(parametro1, parametro2, 1);	// 1 byte
 				}				
 				break;
 				
 			case "escrever_w":
 				if (ProgramaIniciado(estado))
 				{
+					paginacao.EscreverW(parametro1, parametro2);//paginacao.Escrever(parametro1, parametro2, 2); // 2 bytes
 				}
 				break;
 				
