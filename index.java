@@ -10,24 +10,7 @@ public class index {
 	static Paginacao paginacao=null;
 	
 	public static void main(String[] args) {		
-		/*
-		Paginacao p = new Paginacao(1024, 4, 2);
-		//p.testar();
-		p.acessar(0*1024+1);
-		p.testarDisponivel(0*1024+1);
-		p.acessar(1*1024+1);
-		p.testarDisponivel(1*1024+1);
-		p.acessar(2*1024+1);
-		p.testarDisponivel(2*1024+1);
-		p.acessar(3*1024+1);
-		p.testarDisponivel(3*1024+1);
 		
-		p.testarDisponivel(0*1024+1);
-		p.testarDisponivel(1*1024+1);
-		p.testarDisponivel(2*1024+1);
-		p.testarDisponivel(3*1024+1);
-		
-		*/
 		Scanner s = new Scanner(System.in);
 		String estado = "aguardo";
 		
@@ -93,28 +76,32 @@ public class index {
 			case "ler_b":
 				if (ProgramaIniciado(estado))
 				{
-					paginacao.LerB(parametro1, 1); //paginacao.Ler(parametro1, 1);	// 1 byte					
+					paginacao.LerB(Integer.valueOf(parametro1));	// 1 byte	
+					System.out.println();
 				}
 				break;
 				
 			case "ler_w":
 				if (ProgramaIniciado(estado))
 				{			
-					paginacao.LerB(parametro1, 2);	 //paginacao.Ler(parametro1, 2);	// 2 bytes
+					paginacao.LerW(Integer.valueOf(parametro1));// 2 bytes	
+					System.out.println("\n");
 				}
 				break;
 				
-			case "ler_l ":
+			case "ler_l":
 				if (ProgramaIniciado(estado))
 				{
-					paginacao.LerB(parametro1, 4);	 //paginacao.Ler(parametro1, 4);	// 4 bytes
+					paginacao.LerL(Integer.valueOf(parametro1));// 4 bytes
+					System.out.println("\n");
 				}
 				break;
 				
 			case "ler_q":
 				if (ProgramaIniciado(estado))
 				{
-					paginacao.LerB(parametro1, 8);	 //paginacao.Ler(parametro1, 8);	// 8 bytes
+					paginacao.LerQ(Integer.valueOf(parametro1));// 8 bytes
+					System.out.println("\n");
 				}
 				break;
 				
@@ -122,36 +109,53 @@ public class index {
 			case "escrever_b":
 				if (ProgramaIniciado(estado))
 				{	
-					paginacao.EscreverB(parametro1, parametro2, 1);//paginacao.Escrever(parametro1, parametro2, 1);	// 1 byte
+					paginacao.EscreverB((byte)(int)Integer.valueOf(parametro1, 2), Integer.valueOf(parametro2)); // 1 byte
 				}				
 				break;
 				
 			case "escrever_w":
 				if (ProgramaIniciado(estado))
 				{
-					paginacao.EscreverB(parametro1, parametro2, 2);//paginacao.Escrever(parametro1, parametro2, 2); // 2 bytes
+					String[] strBytes = parametro1.split("(?<=\\G........)");
+					byte byte1 = (byte)(int)Integer.valueOf(strBytes[0], 2);
+					byte byte2 = (byte)(int)Integer.valueOf(strBytes[1], 2);
+					paginacao.EscreverW(new byte[]{byte1,byte2}, Integer.valueOf(parametro2)); // 2 bytes
 				}
 				break;
 				
 			case "escrever_l":
 				if (ProgramaIniciado(estado))
 				{
-					paginacao.EscreverB(parametro1, parametro2, 4);//paginacao.Escrever(parametro1, parametro2, 4); // 4 bytes
+					String[] strBytes = parametro1.split("(?<=\\G........)");
+					byte byte1 = (byte)(int)Integer.valueOf(strBytes[0], 2);
+					byte byte2 = (byte)(int)Integer.valueOf(strBytes[1], 2);
+					byte byte3 = (byte)(int)Integer.valueOf(strBytes[2], 2);
+					byte byte4 = (byte)(int)Integer.valueOf(strBytes[3], 2);
+					paginacao.EscreverL(new byte[]{byte1,byte2,byte3,byte4}, Integer.valueOf(parametro2));// 4 bytes
 				}
 				break;
 				
 			case "escrever_q":
 				if (ProgramaIniciado(estado))
 				{
-					paginacao.EscreverB(parametro1, parametro2, 8);//paginacao.Escrever(parametro1, parametro2, 8); // 8 bytes
+					String[] strBytes = parametro1.split("(?<=\\G........)");
+					byte byte1 = (byte)(int)Integer.valueOf(strBytes[0], 2);
+					byte byte2 = (byte)(int)Integer.valueOf(strBytes[1], 2);
+					byte byte3 = (byte)(int)Integer.valueOf(strBytes[2], 2);
+					byte byte4 = (byte)(int)Integer.valueOf(strBytes[3], 2);
+					byte byte5 = (byte)(int)Integer.valueOf(strBytes[4], 2);
+					byte byte6 = (byte)(int)Integer.valueOf(strBytes[5], 2);
+					byte byte7 = (byte)(int)Integer.valueOf(strBytes[6], 2);
+					byte byte8 = (byte)(int)Integer.valueOf(strBytes[7], 2);
+					paginacao.EscreverQ(new byte[]{byte1,byte2,byte3,byte4,byte5,byte6,byte7,byte8}, Integer.valueOf(parametro2));// 8 bytes
 				}
 				break;
 							
 			case "help":
 				System.out.println("iniciar - avisar a aplicação que serão enviadas instruções fis, vir e leitura e escrita, serve para configurar a aplicação");
 				System.out.println("finalizar - encerrar a aplicação e remover arquivo criado");
-				System.out.println("fis [bits] [tamanho das páginas]- alocar em memória principal a quantidade de espaço especificada pelo número de bits informado");
-				System.out.println("vir [bits] [arquivo] - cria o arquivo especificado com o tamanho necessário para armazenar a memória do sistema");
+				System.out.println("fis [bytes] [tamanho das páginas em bytes]- alocar em memória principal a quantidade de espaço especificada pelo número de bits informado");
+				System.out.println("vir [bytes] [nome do arquivo] - cria o arquivo especificado com o tamanho necessário para armazenar a memória do sistema");
 				System.out.println("ler_b [endereço] - leitura de 1 byte no endereço especificado");
 				System.out.println("ler_w [endereço] - leitura de 2 bytes no endereço especificado");
 				System.out.println("ler_l [endereço] - leitura de 4 bytes no endereço especificado");

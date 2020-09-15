@@ -5,9 +5,9 @@ public class PaginaVirtual {
 	boolean sujo;
 	int moldura;
 	
-	public PaginaVirtual() {
+	public PaginaVirtual(int moldura) {
 		disponivel = true;
 		sujo = false;
-		moldura = 0;
+		this.moldura = moldura;
 	}
 }
