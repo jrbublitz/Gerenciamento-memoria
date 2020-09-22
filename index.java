@@ -154,16 +154,16 @@ public class index {
 			case "help":
 				System.out.println("iniciar - avisar a aplicação que serão enviadas instruções fis, vir e leitura e escrita, serve para configurar a aplicação");
 				System.out.println("finalizar - encerrar a aplicação e remover arquivo criado");
-				System.out.println("fis [bytes] [tamanho das páginas em bytes]- alocar em memória principal a quantidade de espaço especificada pelo número de bits informado");
-				System.out.println("vir [bytes] [nome do arquivo] - cria o arquivo especificado com o tamanho necessário para armazenar a memória do sistema");
+				System.out.println("fis [quantidade de páginas fisicas] [tamanho das páginas em bytes]- alocar em memória principal a quantidade de espaço especificada pelo número de bytes informado");
+				System.out.println("vir [quantidade de páginas virtuais] [nome do arquivo] - cria o arquivo especificado com o tamanho necessário para armazenar a memória do sistema");
 				System.out.println("ler_b [endereço] - leitura de 1 byte no endereço especificado");
 				System.out.println("ler_w [endereço] - leitura de 2 bytes no endereço especificado");
 				System.out.println("ler_l [endereço] - leitura de 4 bytes no endereço especificado");
 				System.out.println("ler_q [endereço] - leitura de 8 bytes no endereço especificado");
-				System.out.println("escrever_b [dado] [endereço] - para escrita do dado de 1 byte no endereço especificado");
-				System.out.println("escrever_w [dado] [endereço] - para escrita do dado de 2 bytes no endereço especificado");
-				System.out.println("escrever_l [dado] [endereço] - para escrita do dado de 4 bytes no endereço especificado");
-				System.out.println("escrever_q [dado] [endereço] - para escrita do dado de 8 bytes no endereço especificado");
+				System.out.println("escrever_b [dado em byte] [endereço] - para escrita do dado de 1 byte no endereço especificado");
+				System.out.println("escrever_w [2 bytes de dado(sem espaço)] [endereço] - para escrita do dado de 2 bytes no endereço especificado");
+				System.out.println("escrever_l [4 bytes de dado(sem espaço)] [endereço] - para escrita do dado de 4 bytes no endereço especificado");
+				System.out.println("escrever_q [8 bytes de dado(sem espaço)] [endereço] - para escrita do dado de 8 bytes no endereço especificado");
 				break;
 				
 			default:
